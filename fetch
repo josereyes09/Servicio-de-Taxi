@@ -1,0 +1,29 @@
+document.getElementById('taxi-form').addEventListener('submit', function(event) {
+    event.preventDefault(); 
+
+    
+    const name = document.getElementById('name').value;
+    const location = document.getElementById('location').value;
+    const destination = document.getElementById('destination').value;
+
+   
+    fetch('/send-taxi-request', {  
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, location, destination })
+    })
+    .then(response => response.json())
+    .then(data => {
+     
+        const responseMessage = `
+            <p>¡Gracias, ${name}! Tu taxi está en camino a ${location} y te llevará a ${destination}. En 10 minutos, ¡disfruta tu viaje!</p>
+            <img src="nissan.jpg" alt="Taxi asignado" class="taxi-image">
+        `;
+        document.getElementById('response-message').innerHTML = responseMessage;
+    })
+    .catch(error => console.error('Error al enviar los datos:', error));
+
+    document.getElementById('taxi-form').reset();
+});
